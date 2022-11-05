@@ -17,9 +17,14 @@ public class WindowFrame extends JFrame implements ActionListener {
 
     public WindowFrame() {
         super("ChordTranspose");
-        this.setSize(800, 600);
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        int w = gd.getDisplayMode().getWidth();
+        int h = gd.getDisplayMode().getHeight();
+        this.setSize(w * 5 / 8, h * 5 / 8);
         this.setResizable(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ImageIcon imageIcon = new ImageIcon("src/main/resources/GuitarIcon.png");
+        this.setIconImage(imageIcon.getImage());
         this.getContentPane().setBackground(Color.LIGHT_GRAY);
         this.setLayout(new BorderLayout());
 
@@ -38,15 +43,22 @@ public class WindowFrame extends JFrame implements ActionListener {
         center.setOpaque(false);
 
         input = new JTextArea("Input");
-        input.setLineWrap(true);
-        input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+//        input.setLineWrap(true);
+        JScrollPane inputScroll = new JScrollPane(input,
+            JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//        inputScroll.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+
         output = new JTextArea("Output");
         output.setEditable(false);
-        output.setLineWrap(true);
-        output.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+//        output.setLineWrap(true);
+        JScrollPane outputScroll = new JScrollPane(output,
+            JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//        outputScroll.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
-        center.add(input);
-        center.add(output);
+        center.add(inputScroll);
+        center.add(outputScroll);
 
         JPanel south = new JPanel();
         south.setPreferredSize(new Dimension(margin, margin));
