@@ -4,8 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
-public class WindowFrame extends JFrame implements ActionListener {
+class WindowFrame extends JFrame implements ActionListener {
     static final int INF = 1_000_000;
     static final int topHeight = 50;
     static final int gap = 20;
@@ -13,9 +14,11 @@ public class WindowFrame extends JFrame implements ActionListener {
 
     JButton button;
     JTextArea input;
+    JScrollPane inputScroll;
     JTextArea output;
+    JScrollPane outputScroll;
 
-    public WindowFrame() {
+    WindowFrame() {
         super("ChordTranspose");
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int w = gd.getDisplayMode().getWidth();
@@ -44,7 +47,7 @@ public class WindowFrame extends JFrame implements ActionListener {
 
         input = new JTextArea("Input");
 //        input.setLineWrap(true);
-        JScrollPane inputScroll = new JScrollPane(input,
+        inputScroll = new JScrollPane(input,
             JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
             JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 //        inputScroll.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
@@ -52,7 +55,7 @@ public class WindowFrame extends JFrame implements ActionListener {
         output = new JTextArea("Output");
         output.setEditable(false);
 //        output.setLineWrap(true);
-        JScrollPane outputScroll = new JScrollPane(output,
+        outputScroll = new JScrollPane(output,
             JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
             JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 //        outputScroll.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
@@ -82,7 +85,14 @@ public class WindowFrame extends JFrame implements ActionListener {
         Object source = e.getSource();
         if (source == button) {
             String text = input.getText();
-            output.setText(text);
+            // TODO
+            output.setText(TextParser.replaceWords(text, Map.of("Em", "??")));
+            input.setCaretPosition(0);
+            output.setCaretPosition(0);
+            var inputVertical = inputScroll.getVerticalScrollBar();
+            inputVertical.setValue(inputVertical.getMinimum());
+            var outputVertical = outputScroll.getVerticalScrollBar();
+            outputVertical.setValue(inputVertical.getMinimum());
         }
     }
 }
