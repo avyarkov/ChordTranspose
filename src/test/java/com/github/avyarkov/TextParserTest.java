@@ -27,6 +27,6 @@ class TextParserTest {
         String input = "a b   c l'b b\nb b\tb sdf|b";
         Map<String, String> map = Map.of("b", "?");
         String output = TextParser.replaceWords(input, map);
-        assertEquals(output, "a ?   c l'b ?\n? ?\t? sdf|?");
+        assertEquals(output, "a ?   c l'? ?\n? ?\t? sdf|?");
     }
 }
