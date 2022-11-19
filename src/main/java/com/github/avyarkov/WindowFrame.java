@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Map;
 
 class WindowFrame extends JFrame implements ActionListener {
     static final int INF = 1_000_000;
@@ -160,8 +159,9 @@ class WindowFrame extends JFrame implements ActionListener {
         Object source = e.getSource();
         if (source == transposeButton) {
             String text = input.getText();
-            // TODO
-            output.setText(TextParser.replaceWords(text, Map.of("Em", "??")));
+            int sign = comboBox.getSelectedIndex() == 0 ? 1 : -1;
+            int numberOfSteps = inputNumberField.getNumber();
+            output.setText(ChordParser.transposeStringBy(text, sign * numberOfSteps));
             input.setCaretPosition(0);
             output.setCaretPosition(0);
             var inputVertical = inputScroll.getVerticalScrollBar();
