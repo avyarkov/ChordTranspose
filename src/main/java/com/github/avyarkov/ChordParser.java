@@ -9,6 +9,9 @@ import static java.util.Map.entry;
 
 public class ChordParser {
     private static final int TOTAL_NUMBER_OF_NOTES = 12;
+    private static int noteTransposedBy(int noteId, int numberOfSteps) {
+        return ((noteId + numberOfSteps) % TOTAL_NUMBER_OF_NOTES + TOTAL_NUMBER_OF_NOTES) % TOTAL_NUMBER_OF_NOTES;
+    }
 
     private static final Map<String, Integer> STRING_TO_NOTE_ID = Map.ofEntries(
         entry("C", 0),
@@ -32,7 +35,7 @@ public class ChordParser {
         entry("H", 11)
     );
 
-    static final List<String> VALID_NOTE_STRINGS = List.copyOf(STRING_TO_NOTE_ID.keySet()
+    public static final List<String> VALID_NOTE_STRINGS = List.copyOf(STRING_TO_NOTE_ID.keySet()
         .stream().sorted().collect(Collectors.toList()));
 
     private static final Map<Integer, String> NOTE_ID_TO_STRING = Map.ofEntries(
@@ -53,16 +56,17 @@ public class ChordParser {
     private static final Map<String, Integer> STRING_TO_MODIFIER_ID = Map.ofEntries(
         entry("", 0),
         entry("m", 1),
-        entry("7", 2),
-        entry("m7", 3),
-        entry("5", 4)
-    );
+        entry("5", 2),
+        entry("7", 3),
+        entry("m7", 4),
+        entry("maj7", 5)
+        );
 
-    static final List<String> VALID_MODIFIER_STRINGS = List.copyOf(STRING_TO_MODIFIER_ID.keySet()
+    public static final List<String> VALID_MODIFIER_STRINGS = List.copyOf(STRING_TO_MODIFIER_ID.keySet()
         .stream().sorted().collect(Collectors.toList()));
 
     // for reference and testing
-    static final List<String> VALID_CHORD_STRINGS = List.copyOf(
+    public static final List<String> VALID_CHORD_STRINGS = List.copyOf(
         VALID_NOTE_STRINGS.stream().flatMap(s -> VALID_MODIFIER_STRINGS.stream().map(t -> s + t))
             .collect(Collectors.toList())
     );
@@ -72,12 +76,16 @@ public class ChordParser {
         for (String noteString : VALID_NOTE_STRINGS) {
             for (String modifierString : VALID_MODIFIER_STRINGS) {
                 String chordString = noteString + modifierString;
-                int transposedNote = (STRING_TO_NOTE_ID.get(noteString) + numberOfSteps) % TOTAL_NUMBER_OF_NOTES;
+                int transposedNote = noteTransposedBy(STRING_TO_NOTE_ID.get(noteString), numberOfSteps);
                 String transposedChordString = NOTE_ID_TO_STRING.get(transposedNote) + modifierString;
                 result.put(chordString, transposedChordString);
             }
         }
         return result;
+    }
+
+    public static String transposeStringBy(String input, int numberOfSteps) {
+        return TextParser.replaceWords(input, transposingMap(numberOfSteps));
     }
 
 }
