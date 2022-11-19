@@ -1,6 +1,5 @@
 package com.github.avyarkov;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -11,15 +10,17 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TextParserTest {
-    static String input;
-    @BeforeAll
-    static void beforeAll() {
+
+    @Test
+    void readAndReplaceWithQuestionMarks() {
+        String input;
         try {
             input = new String(Files.readAllBytes(Paths.get("src/test/resources/Lyrics.txt")));
         } catch (IOException e) {
             throw new RuntimeException("File not found!", e);
         }
-        System.out.println(TextParser.replaceWords(input, Map.of("Em", "??")));
+        String text = TextParser.replaceWords(input, Map.of("Em", "??"));
+        System.out.println(text);
     }
 
     @Test
