@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 
 class WindowFrame extends JFrame implements ActionListener {
     static final int INF = 1_000_000;
@@ -24,7 +25,7 @@ class WindowFrame extends JFrame implements ActionListener {
                 @Override
                 public void keyTyped(KeyEvent ke) {
                     char inputChar = ke.getKeyChar();
-                    if (!Character.isDigit(inputChar) || getText().length() >= maxLength ) {
+                    if (!Character.isDigit(inputChar) || getText().length() >= maxLength) {
                         ke.consume();
                     }
                 }
@@ -79,8 +80,11 @@ class WindowFrame extends JFrame implements ActionListener {
         this.setSize(w * 5 / 8, h * 5 / 8);
         this.setResizable(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ImageIcon imageIcon = new ImageIcon("src/main/resources/GuitarIcon.png");
-        this.setIconImage(imageIcon.getImage());
+        URL url = getClass().getClassLoader().getResource("GuitarIcon.png");
+        if (url != null) {
+            ImageIcon imageIcon = new ImageIcon(url);
+            this.setIconImage(imageIcon.getImage());
+        }
         this.getContentPane().setBackground(Color.LIGHT_GRAY);
         this.setLayout(new BorderLayout());
 
