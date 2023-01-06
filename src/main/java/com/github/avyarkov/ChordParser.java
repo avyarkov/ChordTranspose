@@ -10,6 +10,8 @@ import static java.util.Map.entry;
 public class ChordParser {
     private static final int TOTAL_NUMBER_OF_NOTES = 12;
     private static int noteTransposedBy(int noteId, int numberOfSteps) {
+        // from future me:
+        // return Math.floorMod(noteId + numberOfSteps, TOTAL_NUMBER_OF_NOTES)/
         return ((noteId + numberOfSteps) % TOTAL_NUMBER_OF_NOTES + TOTAL_NUMBER_OF_NOTES) % TOTAL_NUMBER_OF_NOTES;
     }
 
